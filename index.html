@@ -1,310 +1,72 @@
-```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>3상 부하불평형률 계산기</title>
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="./manifest.json">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>3상 부하불평형률 계산기</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f172a">
+<link rel="manifest" href="./manifest.json">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }</style>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen p-2 sm:p-4 flex flex-col items-center justify-center">
 
-    <div class="w-full max-w-xl bg-slate-850 bg-slate-850/90 bg-[#131c31] border border-slate-700/80 rounded-2xl shadow-2xl p-3 sm:p-4 space-y-3">
-        
-        <!-- Row 1: Header & Unit -->
-        <div class="flex items-center justify-between border-b border-slate-700/70 pb-2">
-            <div class="flex items-center space-x-2">
-                <div class="bg-blue-600 text-white p-1.5 rounded-lg shadow">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                </div>
-                <div>
-                    <h1 class="text-xs sm:text-sm font-bold tracking-tight text-white">3상 부하불평형률 계산기</h1>
-                    <p class="text-[10px] text-slate-300">전기기사 실기 및 실무 기준 (KEC)</p>
-                </div>
+<div class="w-full max-w-xl bg-slate-850 bg-slate-850/90 bg-[#131c31] border border-slate-700/80 rounded-2xl shadow-2xl p-3 sm:p-4 space-y-3">
+    
+    <!-- Row 1: Header & Unit -->
+    <div class="flex items-center justify-between border-b border-slate-700/70 pb-2">
+        <div class="flex items-center space-x-2">
+            <div class="bg-blue-600 text-white p-1.5 rounded-lg shadow">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             </div>
-            
-            <div class="flex items-center gap-1.5">
-                <div class="inline-flex rounded-md bg-slate-700 p-0.5">
-                    <button id="unitAmp" onclick="setUnit('A')" class="px-2 py-0.5 text-[11px] font-bold rounded bg-blue-600 text-white transition">A</button>
-                    <button id="unitKw" onclick="setUnit('kW')" class="px-2 py-0.5 text-[11px] font-medium rounded text-slate-300 hover:text-white transition">kW</button>
-                </div>
-                <button onclick="openFormulaModal()" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 px-2 py-1 rounded-md border border-slate-600 transition">
-                    공식
-                </button>
+            <div>
+                <h1 class="text-xs sm:text-sm font-bold tracking-tight text-white">3상 부하불평형률 계산기</h1>
+                <p class="text-[10px] text-slate-300">전기기사 실기 및 실무 기준 (KEC)</p>
             </div>
         </div>
-
-        <!-- Row 2: Presets & Batch Toggle -->
-        <div class="flex flex-wrap items-center justify-between gap-1.5 bg-slate-800/60 px-2.5 py-1.5 rounded-lg border border-slate-700/60 text-xs">
-            <div class="flex items-center gap-1">
-                <span class="text-[10px] text-slate-300 font-medium">프리셋:</span>
-                <button onclick="setPreset(50, 50, 50)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 text-[10px] py-0.5 px-1.5 rounded border border-slate-600 transition">평형(50)</button>
-                <button onclick="setPreset(40, 50, 60)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 text-[10px] py-0.5 px-1.5 rounded border border-slate-600 transition">양호(40/60)</button>
-                <button onclick="setPreset(30, 50, 80)" class="bg-amber-900/40 text-amber-200 text-[10px] py-0.5 px-1.5 rounded border border-amber-700/50 transition">불평형</button>
+        <div class="flex items-center gap-1.5">
+            <div class="inline-flex rounded-md bg-slate-700 p-0.5">
+                <button id="unitAmp" onclick="setUnit('A')" class="px-2 py-0.5 text-[11px] font-bold rounded bg-blue-600 text-white transition">A</button>
+                <button id="unitKw" onclick="setUnit('kW')" class="px-2 py-0.5 text-[11px] font-medium rounded text-slate-300 hover:text-white transition">kW</button>
             </div>
-            <button onclick="toggleBatchInput()" class="text-[10px] text-blue-400 hover:text-blue-300 font-medium transition flex items-center gap-1">
-                <span id="batchToggleText">일괄입력 열기</span>
-            </button>
-        </div>
-
-        <!-- Batch Input Drawer -->
-        <div id="batchInputContainer" class="hidden bg-slate-800 p-2.5 rounded-xl border border-blue-500/50 space-y-1.5">
-            <label class="block text-[10px] font-medium text-blue-300">R, S, T 값을 공백이나 콤마로 구분 (예: 50 45 60)</label>
-            <div class="flex gap-2">
-                <input type="text" id="batchInputText" placeholder="50 45 60" class="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-blue-500">
-                <button onclick="applyBatchInput()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded-lg text-xs font-bold transition">적용</button>
-            </div>
-        </div>
-
-        <!-- Row 3: 3-Column Phase Inputs & Adjustment Buttons -->
-        <div class="space-y-1.5">
-            <span class="text-xs font-bold text-slate-200 px-0.5 block">상별 수치 조작 (R, S, T)</span>
-            <div class="grid grid-cols-3 gap-2.5">
-                <!-- R Phase -->
-                <div class="bg-slate-800 p-3.5 sm:p-4 rounded-2xl border border-slate-700 flex flex-col space-y-3 shadow-lg">
-                    <div class="flex items-center justify-between">
-                        <span class="w-6 h-6 rounded-lg bg-rose-500/25 text-rose-300 font-bold flex items-center justify-center text-xs border border-rose-500/40">R</span>
-                        <span class="text-xs font-bold text-slate-200">R상</span>
-                    </div>
-                    <input type="number" id="inputR" value="50" step="any" oninput="syncInput('R')" class="w-full bg-slate-900 border border-slate-600 text-white text-center font-black py-3 rounded-xl focus:outline-none focus:border-blue-500 text-lg sm:text-xl shadow-inner">
-                    <div class="grid grid-cols-2 gap-1.5">
-                        <button onclick="adjustValue('R', -5)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-xl py-2 font-bold text-xs transition active:scale-95">-5</button>
-                        <button onclick="adjustValue('R', 5)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-xl py-2 font-bold text-xs transition active:scale-95">+5</button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-1.5">
-                        <button onclick="adjustValue('R', -1)" class="bg-slate-700/60 hover:bg-slate-600 text-slate-300 rounded-lg py-1 font-semibold text-[11px] transition active:scale-95">-1</button>
-                        <button onclick="adjustValue('R', 1)" class="bg-slate-700/60 hover:bg-slate-600 text-slate-300 rounded-lg py-1 font-semibold text-[11px] transition active:scale-95">+1</button>
-                    </div>
-                </div>
-
-                <!-- S Phase -->
-                <div class="bg-slate-800 p-3.5 sm:p-4 rounded-2xl border border-slate-700 flex flex-col space-y-3 shadow-lg">
-                    <div class="flex items-center justify-between">
-                        <span class="w-6 h-6 rounded-lg bg-amber-500/25 text-amber-300 font-bold flex items-center justify-center text-xs border border-amber-500/40">S</span>
-                        <span class="text-xs font-bold text-slate-200">S상</span>
-                    </div>
-                    <input type="number" id="inputS" value="50" step="any" oninput="syncInput('S')" class="w-full bg-slate-900 border border-slate-600 text-white text-center font-black py-3 rounded-xl focus:outline-none focus:border-blue-500 text-lg sm:text-xl shadow-inner">
-                    <div class="grid grid-cols-2 gap-1.5">
-                        <button onclick="adjustValue('S', -5)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-xl py-2 font-bold text-xs transition active:scale-95">-5</button>
-                        <button onclick="adjustValue('S', 5)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-xl py-2 font-bold text-xs transition active:scale-95">+5</button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-1.5">
-                        <button onclick="adjustValue('S', -1)" class="bg-slate-700/60 hover:bg-slate-600 text-slate-300 rounded-lg py-1 font-semibold text-[11px] transition active:scale-95">-1</button>
-                        <button onclick="adjustValue('S', 1)" class="bg-slate-700/60 hover:bg-slate-600 text-slate-300 rounded-lg py-1 font-semibold text-[11px] transition active:scale-95">+1</button>
-                    </div>
-                </div>
-
-                <!-- T Phase -->
-                <div class="bg-slate-800 p-3.5 sm:p-4 rounded-2xl border border-slate-700 flex flex-col space-y-3 shadow-lg">
-                    <div class="flex items-center justify-between">
-                        <span class="w-6 h-6 rounded-lg bg-cyan-500/25 text-cyan-300 font-bold flex items-center justify-center text-xs border border-cyan-500/40">T</span>
-                        <span class="text-xs font-bold text-slate-200">T상</span>
-                    </div>
-                    <input type="number" id="inputT" value="50" step="any" oninput="syncInput('T')" class="w-full bg-slate-900 border border-slate-600 text-white text-center font-black py-3 rounded-xl focus:outline-none focus:border-blue-500 text-lg sm:text-xl shadow-inner">
-                    <div class="grid grid-cols-2 gap-1.5">
-                        <button onclick="adjustValue('T', -5)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-xl py-2 font-bold text-xs transition active:scale-95">-5</button>
-                        <button onclick="adjustValue('T', 5)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 rounded-xl py-2 font-bold text-xs transition active:scale-95">+5</button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-1.5">
-                        <button onclick="adjustValue('T', -1)" class="bg-slate-700/60 hover:bg-slate-600 text-slate-300 rounded-lg py-1 font-semibold text-[11px] transition active:scale-95">-1</button>
-                        <button onclick="adjustValue('T', 1)" class="bg-slate-700/60 hover:bg-slate-600 text-slate-300 rounded-lg py-1 font-semibold text-[11px] transition active:scale-95">+1</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Row 4: Result Dashboard & Formula Breakdown -->
-        <div id="resultCard" class="bg-slate-800 p-4 sm:p-5 rounded-2xl border border-slate-700 space-y-3.5 shadow-2xl">
-            <div class="flex justify-between items-center">
-                <div>
-                    <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">부하불평형률</span>
-                    <div class="text-4xl sm:text-5xl font-black text-white mt-1 flex items-baseline gap-1.5">
-                        <span id="resRate">0.00</span><span class="text-lg font-bold text-slate-300">%</span>
-                    </div>
-                </div>
-                <div id="statusBadge" class="px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 shadow-lg">
-                    양호 (30% 이하)
-                </div>
-            </div>
-            
-            <!-- Quick metrics row -->
-            <div class="grid grid-cols-2 gap-2.5">
-                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700">
-                    <span class="text-[11px] font-bold text-slate-300 block">각 상 평균 (<span class="unit-symbol">A</span>)</span>
-                    <span id="resAvg" class="text-base sm:text-lg font-extrabold text-white mt-0.5 block">50.00</span>
-                </div>
-                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700">
-                    <span class="text-[11px] font-bold text-slate-300 block">최대 편차 (절대값)</span>
-                    <span id="resMaxDev" class="text-base sm:text-lg font-extrabold text-white mt-0.5 block">0.00</span>
-                </div>
-            </div>
-
-            <!-- Formula breakdown -->
-            <div class="border-t border-slate-700 pt-3 space-y-1.5">
-                <div class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                    실기 산식 및 판정 과정
-                </div>
-                <p class="text-xs text-slate-200 leading-relaxed font-mono bg-slate-900 p-2.5 rounded-xl border border-slate-700 shadow-inner" id="resFormula">
-                    • 공식: (최대 편차 / 평균) × 100<br>• 계산: (0 / 50) × 100 = 0.00%
-                </p>
-            </div>
-        </div>
-
-        <div class="text-center text-[10px] text-slate-400 pt-1">
-            전기설비 기술기준 및 실무 가이드 준용 | 단상 3선식 / 3상 4선식
+            <button onclick="openFormulaModal()" class="text-[11px] bg-slate-700 hover:bg-slate-600 text-slate-200 px-2 py-1 rounded-md border border-slate-600 transition">공식</button>
         </div>
     </div>
 
-    <!-- Formula Modal -->
-    <div id="formulaModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl max-w-sm w-full p-5 space-y-3 shadow-2xl">
-            <div class="flex justify-between items-center border-b border-slate-700 pb-2.5">
-                <h3 class="font-bold text-white text-sm">3상 부하불평형률 계산 공식</h3>
-                <button onclick="closeFormulaModal()" class="text-slate-300 hover:text-white text-lg">&times;</button>
-            </div>
-            <div class="space-y-2.5 text-xs text-slate-200 leading-relaxed">
-                <div class="bg-slate-900 p-2.5 rounded-xl border border-slate-700 font-mono text-center text-blue-400 font-bold text-[11px]">
-                    불평형률(%) = (최대 편차 / 평균 전류) × 100
-                </div>
-                <ul class="list-disc pl-4 space-y-1 text-slate-300 text-[11px]">
-                    <li><strong>30% 이하:</strong> 적합 (기술기준 만족)</li>
-                    <li><strong>30% 초과:</strong> 부적합 (상간 부하 재배치)</li>
-                </ul>
-            </div>
-            <button onclick="closeFormulaModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 rounded-xl text-xs transition">확인</button>
+    <!-- Row 2: Presets & Batch Toggle -->
+    <div class="flex flex-wrap items-center justify-between gap-1.5 bg-slate-800/60 px-2.5 py-1.5 rounded-lg border border-slate-700/60 text-xs">
+        <div class="flex items-center gap-1">
+            <span class="text-[10px] text-slate-300 font-medium">프리셋:</span>
+            <button onclick="setPreset(50, 50, 50)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 text-[10px] py-0.5 px-1.5 rounded border border-slate-600 transition">평형(50)</button>
+            <button onclick="setPreset(40, 50, 60)" class="bg-slate-700 hover:bg-slate-600 text-slate-100 text-[10px] py-0.5 px-1.5 rounded border border-slate-600 transition">양호(40/60)</button>
+            <button onclick="setPreset(30, 50, 80)" class="bg-amber-900/40 text-amber-200 text-[10px] py-0.5 px-1.5 rounded border border-amber-700/50 transition">불평형</button>
+        </div>
+        <button onclick="toggleBatchInput()" class="text-[10px] text-blue-400 hover:text-blue-300 font-medium transition flex items-center gap-1">
+            <span id="batchToggleText">일괄입력 열기</span>
+        </button>
+    </div>
+
+    <!-- Batch Input Drawer -->
+    <div id="batchInputContainer" class="hidden bg-slate-800 p-2.5 rounded-xl border border-blue-500/50 space-y-1.5">
+        <label class="block text-[10px] font-medium text-blue-300">R, S, T 값을 공백이나 콤마로 구분 (예: 50 45 60)</label>
+        <div class="flex gap-2">
+            <input type="text" id="batchInputText" placeholder="50 45 60" class="flex-1 bg-slate-900 border border-slate-600 rounded-lg px-2.5 py-1 text-xs text-white focus:outline-none focus:border-blue-500">
+            <button onclick="applyBatchInput()" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded-lg text-xs font-bold transition">적용</button>
         </div>
     </div>
 
-    <script>
-
-
-        let currentUnit = 'A';
-
-        function setUnit(unit) {
-            currentUnit = unit;
-            const unitAmpBtn = document.getElementById('unitAmp');
-            const unitKwBtn = document.getElementById('unitKw');
-            
-            if (unit === 'A') {
-                unitAmpBtn.className = "px-2 py-0.5 text-[11px] font-bold rounded bg-blue-600 text-white transition";
-                unitKwBtn.className = "px-2 py-0.5 text-[11px] font-medium rounded text-slate-300 hover:text-white transition";
-            } else {
-                unitKwBtn.className = "px-2 py-0.5 text-[11px] font-bold rounded bg-blue-600 text-white transition";
-                unitAmpBtn.className = "px-2 py-0.5 text-[11px] font-medium rounded text-slate-300 hover:text-white transition";
-            }
-            document.querySelectorAll('.unit-symbol').forEach(el => el.innerText = unit);
-            calculate();
-        }
-
-        function toggleBatchInput() {
-            const container = document.getElementById('batchInputContainer');
-            const toggleText = document.getElementById('batchToggleText');
-            if (container.classList.contains('hidden')) {
-                container.classList.remove('hidden');
-                toggleText.innerText = "일괄입력 닫기";
-            } else {
-                container.classList.add('hidden');
-                toggleText.innerText = "일괄입력 열기";
-            }
-        }
-
-        function applyBatchInput() {
-            let text = document.getElementById('batchInputText').value.trim();
-            let parts = text.replace(/,/g, ' ').split(/\s+/).filter(Boolean);
-            if (parts.length >= 3) {
-                let r = parseFloat(parts[0]);
-                let s = parseFloat(parts[1]);
-                let t = parseFloat(parts[2]);
-                if (!isNaN(r) && !isNaN(s) && !isNaN(t)) {
-                    setPreset(r, s, t);
-                    toggleBatchInput();
-                    return;
-                }
-            }
-            alert("3개의 숫자 값을 올바르게 입력해주세요. (예: 50 45 60)");
-        }
-
-        function setPreset(r, s, t) {
-            document.getElementById('inputR').value = r;
-            document.getElementById('inputS').value = s;
-            document.getElementById('inputT').value = t;
-            calculate();
-        }
-
-        function syncInput(phase) {
-            calculate();
-        }
-
-        function adjustValue(phase, amount) {
-            let valInput = document.getElementById('input' + phase);
-            let cur = parseFloat(valInput.value) || 0;
-            let newVal = Math.max(0, cur + amount);
-            valInput.value = newVal;
-            calculate();
-        }
-
-        function calculate() {
-            let r = parseFloat(document.getElementById('inputR').value) || 0;
-            let s = parseFloat(document.getElementById('inputS').value) || 0;
-            let t = parseFloat(document.getElementById('inputT').value) || 0;
-
-            let avg = (r + s + t) / 3;
-            let diffR = Math.abs(r - avg);
-            let diffS = Math.abs(s - avg);
-            let diffT = Math.abs(t - avg);
-
-            let maxDiff = Math.max(diffR, diffS, diffT);
-            let maxPhaseName = 'R상';
-            if (maxDiff === diffS) maxPhaseName = 'S상';
-            if (maxDiff === diffT) maxPhaseName = 'T상';
-
-            let rate = avg === 0 ? 0 : (maxDiff / avg) * 100;
-
-            document.getElementById('resRate').innerText = rate.toFixed(2);
-            document.getElementById('resAvg').innerText = avg.toFixed(2);
-            document.getElementById('resMaxDev').innerText = maxDiff.toFixed(2);
-
-            let badge = document.getElementById('statusBadge');
-            if (rate <= 30) {
-                badge.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold bg-emerald-500/25 text-emerald-300 border border-emerald-500/40 shadow-lg";
-                badge.innerText = "양호 (30% 이하)";
-            } else {
-                badge.className = "px-3 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold bg-amber-500/25 text-amber-300 border border-amber-500/40 shadow-lg";
-                badge.innerText = "부적합 (30% 초과)";
-            }
-
-            let formulaText = `• 공식: (최대 편차 / 평균 ${currentUnit}) × 100<br>• 계산: (${maxDiff.toFixed(2)} / ${avg.toFixed(2)}) × 100 = <strong>${rate.toFixed(2)}%</strong> (${maxPhaseName} 최대)`;
-            document.getElementById('resFormula').innerHTML = formulaText;
-        }
-
-        function openFormulaModal() {
-            document.getElementById('formulaModal').classList.remove('hidden');
-        }
-
-        function closeFormulaModal() {
-            document.getElementById('formulaModal').classList.add('hidden');
-        }
-
-        window.onload = function() {
-            calculate();
-        };
-    </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js');
-  }
-</script>
-</body>
-</html>
-```
+    <!-- Row 3: Phase Inputs -->
+    <div class="space-y-1.5">
+        <span class="text-xs font-bold text-slate-200 px-0.5 block">상별 수치 조작 (R, S, T)</span>
+        <div class="grid grid-cols-3 gap-2.5">
+            <!-- R Phase -->
+            <div class="bg-slate-800 p-3.5 sm:p-4 rounded-2xl border border-slate-700 flex flex-col space-y-3 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <span class="w-6 h-6 rounded-lg bg-rose-500/25 text-rose-300 font-bold flex items-center justify-center text-xs border border-rose-500/40">R</span>
+                    <span class="text-xs font-bold text-slate-200">R상</span>
+                </div>
+                <input type="number" id="inputR" value="50" step="any" oninput="syncInput('R')" class="w-full bg-slate-900 border border-slate-600 text-white text-center font-black
